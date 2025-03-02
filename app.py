@@ -33,7 +33,7 @@ with st.sidebar:
 
     tipo_equipamento = st.selectbox('Tipo de Equipamento', options=['Todos'] + df_bombas['Tipo'].unique().tolist())
 
-    ativar_raio = st.checkbox(label='Raio de abrangência', key="manter_raio", label_visibility="visible")
+    ativar_raio = st.checkbox(label='Raio de abrangência', key="manter_raio", label_visibility="visible", value=True)
 
     st.markdown(
         """
