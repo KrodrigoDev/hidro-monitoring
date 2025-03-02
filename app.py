@@ -33,7 +33,8 @@ with st.sidebar:
 
     tipo_equipamento = st.selectbox('Tipo de Equipamento', options=['Todos'] + df_bombas['Tipo'].unique().tolist())
 
-    ativar_raio = st.checkbox(label='Raio de abrangência (Bomba)', key="manter_raio", label_visibility="visible", value=True)
+    ativar_raio = st.checkbox(label='Raio de abrangência (Bomba)', key="manter_raio", label_visibility="visible",
+                              value=True)
 
     st.markdown(
         """
@@ -109,7 +110,7 @@ with st.container(border=True):
             Última Manutenção: {ult_manutencao}<br>
             Última Limpeza: {ult_limpeza}<br>
             Situação: {situacao}<br>
-            Voltagem: {voltagem} Volts<br>
+            Voltagem: {voltagem}<br>
             Amperagem: {amperagem}<br>
             Potência: {potencia}<br>
             Coordenadas: {lat}, {lon}<br>
