@@ -16,7 +16,7 @@ def carregar_dados():
 
     df = pd.read_csv(url_dataframe, decimal=',')
 
-    shp_coruripe = gpd.read_file('../Painel_Daesc/data/shp/delimitacao_coruripe.shp')
+    shp_coruripe = gpd.read_file('../hidro-monitoring/data/shp/delimitacao_coruripe.shp')
 
     return df, shp_coruripe
 
