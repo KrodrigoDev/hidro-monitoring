@@ -116,10 +116,10 @@ with st.container(border=True):
         """
 
         icone_path = {
-            'Bomba': '../Painel_Daesc/images/bomba-de-agua.png',
-            'Reservatório': '../Painel_Daesc/images/torre-de-agua.png',
-            'Poço': '../Painel_Daesc/images/poco-de-agua.png'
-        }.get(tipo, '../Painel_Daesc/images/default.png')
+            'Bomba': '../hidro-monitoring/images/bomba-de-agua.png',
+            'Reservatório': '../hidro-monitoring/images/torre-de-agua.png',
+            'Poço': '../hidro-monitoring/images/poco-de-agua.png'
+        }.get(tipo, '../hidro-monitoring/images/default.png')
 
         custom_icon = folium.CustomIcon(icon_image=icone_path, icon_size=(30, 30))
 
