@@ -90,7 +90,7 @@ with st.container(border=True):
         lat, lon = ponto["lat"], ponto["lon"]
         nome, tipo = ponto["nome"], ponto["Tipo"]
         ult_manutencao, ult_limpeza, situacao = ponto["ult_manutencao"], ponto["ult_limpeza"], ponto["Situaçao"]
-        amperagem, potencia = ponto["amperagem"], ponto["potencia"]
+        amperagem, potencia, voltagem = ponto["amperagem"], ponto["potencia"], ponto["voltagem"]
 
         if tipo == 'Bomba' and tipo_equipamento in ['Bomba', 'Todos'] and ativar_raio:
             ponto_geo = Point(lon, lat)
@@ -109,6 +109,7 @@ with st.container(border=True):
             Última Manutenção: {ult_manutencao}<br>
             Última Limpeza: {ult_limpeza}<br>
             Situação: {situacao}<br>
+            Voltagem: {voltagem} Volts<br>
             Amperagem: {amperagem}<br>
             Potência: {potencia}<br>
             Coordenadas: {lat}, {lon}<br>
