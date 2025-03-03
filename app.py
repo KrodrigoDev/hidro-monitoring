@@ -3,55 +3,21 @@ import folium
 from shapely.geometry import Point
 import geopandas as gpd
 from streamlit_folium import st_folium
-import pandas as pd
-from dotenv import dotenv_values
 
 # Título principal
 st.header("Panorama Geral")
 
+# Pegando dados da sessão
+df_filtrado, gdf_limites = st.session_state.df_bombas, st.session_state.gdf_limites
 
-@st.cache_data
-def carregar_dados():
-    url_dataframe = dotenv_values('../hidro-monitoring/data/bombas.env')['URL_DATAFRAME']
-
-    df = pd.read_csv(url_dataframe, decimal=',')
-
-    shp_coruripe = gpd.read_file('../hidro-monitoring/data/shp/delimitacao_coruripe.shp')
-
-    return df, shp_coruripe
-
-
-df_bombas, gdf_limites = carregar_dados()
-
-# Seção de Filtros
-with st.sidebar:
-    st.header('Filtros')
-
-    area = st.selectbox('Área', options=['Todos'] + df_bombas['area'].unique().tolist())
-
-    tipo_situacao = st.selectbox('Situação', options=['Todos'] + df_bombas['Situaçao'].unique().tolist())
-
-    tipo_equipamento = st.selectbox('Tipo de Equipamento', options=['Todos'] + df_bombas['Tipo'].unique().tolist())
-
-    ativar_raio = st.checkbox(label='Raio de abrangência (Bomba)', key="manter_raio", label_visibility="visible",
-                              value=True)
-
-    st.markdown(
-        """
-        <div style="text-align: center; font-size: 14px; margin-top: 20px;">
-            Created by <b>Kauã Rodrigo</b> 🚀<br>
-            <a href="https://www.linkedin.com/in/krodrigodev/" target="_blank">LinkedIn</a> | 
-            <a href="https://github.com/KrodrigoDev" target="_blank">GitHub</a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
-df_filtrado = df_bombas.copy()
+area = st.session_state.area
+tipo_equipamento = st.session_state.tipo_equipamento
+tipo_situacao = st.session_state.tipo_situacao
+ativar_raio = st.session_state.ativar_raio
 
 # Aplicar filtros
 if area != 'Todos':
-    df_filtrado = df_bombas[df_bombas['area'] == area].copy()
+    df_filtrado = df_filtrado[df_filtrado['area'] == area].copy()
 
 if tipo_equipamento != 'Todos':
     df_filtrado = df_filtrado[df_filtrado['Tipo'] == tipo_equipamento]
@@ -132,7 +98,3 @@ with st.container(border=True):
 
     # Exibir o mapa
     st_folium(m, width=800, height=600)
-
-# Botão para atualizar os dados
-if st.button("🔄 Atualizar Dados"):
-    st.cache_data.clear()
