@@ -18,7 +18,7 @@ def dump_login() -> None:
 # Carrega configurações de autenticação
 def load_config():
     """Carrega o arquivo de configuração do login."""
-    with open(path_file, encoding='latin-1') as file:  # Certificando UTF-8, latin-1
+    with open(path_file, encoding='ISO-8859-1') as file:
         return yaml.load(file, Loader=SafeLoader)
 
 
