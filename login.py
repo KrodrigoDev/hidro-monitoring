@@ -11,7 +11,7 @@ path_file = '../hidro-monitoring/.streamlit/config.yaml'
 
 def dump_login() -> None:
     """Atualiza o arquivo de configuração de login."""
-    with open(path_file, 'w') as file:
+    with open(path_file, 'w', encoding='ISO-8859-1') as file:
         yaml.dump(config, file, default_flow_style=False, allow_unicode=True)
 
 
