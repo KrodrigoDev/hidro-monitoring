@@ -20,13 +20,13 @@ if area != 'Todos':
     df_filtrado = df_filtrado[df_filtrado['area'] == area].copy()
 
 if tipo_equipamento != 'Todos':
-    df_filtrado = df_filtrado[df_filtrado['Tipo'] == tipo_equipamento]
+    df_filtrado = df_filtrado[df_filtrado['tipo'] == tipo_equipamento]
 
 if tipo_situacao != 'Todos':
-    df_filtrado = df_filtrado[df_filtrado['Situaçao'] == tipo_situacao]
+    df_filtrado = df_filtrado[df_filtrado['situaçao'] == tipo_situacao]
 
 # Métricas de Contagem
-metricas = df_filtrado['Tipo'].value_counts().to_dict()
+metricas = df_filtrado['tipo'].value_counts().to_dict()
 
 col1, col2, col3 = st.columns(3)
 
@@ -55,9 +55,10 @@ with st.container(border=True):
     # Adicionar pontos ao mapa
     for _, ponto in df_filtrado.iterrows():
         lat, lon = ponto["lat"], ponto["lon"]
-        nome, tipo = ponto["nome"], ponto["Tipo"]
-        ult_manutencao, ult_limpeza, situacao = ponto["ult_manutencao"], ponto["ult_limpeza"], ponto["Situaçao"]
+        nome, tipo = ponto["nome"], ponto["tipo"]
+        ult_manutencao, ult_limpeza, situacao = ponto["ult_manutencao"], ponto["ult_limpeza"], ponto["situaçao"]
         amperagem, potencia, voltagem = ponto["amperagem"], ponto["potencia"], ponto["voltagem"]
+        vazao, profundidade = ponto["vazão"], ponto["profundidade"]
 
         if tipo == 'Bomba' and tipo_equipamento in ['Bomba', 'Todos'] and ativar_raio:
             ponto_geo = Point(lon, lat)
@@ -71,16 +72,21 @@ with st.container(border=True):
             ).add_to(m)
 
         popup_content = f"""
-        <div style="width: 350px;">
-            <b>{nome}</b><br>
-            Última Manutenção: {ult_manutencao}<br>
-            Última Limpeza: {ult_limpeza}<br>
-            Situação: {situacao}<br>
-            Voltagem: {voltagem}<br>
-            Amperagem: {amperagem}<br>
-            Potência: {potencia}<br>
-            Coordenadas: {lat}, {lon}<br>
-        </div>
+            <div style="width: 320px; font-family: Arial, sans-serif;">
+                <h4 style="margin: 5px 0;">{nome}</h4>
+                <hr style="border: 0.5px solid #ccc;">
+                <p><b>Última Manutenção: </b>{ult_manutencao}</p>
+                <p><b>Última Limpeza: </b>{ult_limpeza}</p>
+                <p><b>Situação: </b>{situacao}</p>
+                <hr style="border: 0.5px solid #ccc;">
+                <p><b>Voltagem: </b>{voltagem}</p>
+                <p><b>Amperagem: </b>{amperagem}</p>
+                <p><b>Potência: </b>{potencia}</p>
+                <hr style="border: 0.5px solid #ccc;">
+                <p><b>Coordenadas: </b>{lat}, {lon}</p>
+                <p><b>Vazão: </b>{vazao}</p>
+                <p><b>Profundidade: </b>{profundidade}</p>
+            </div>
         """
 
         icone_path = {

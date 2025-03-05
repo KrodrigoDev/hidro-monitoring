@@ -31,10 +31,10 @@ def run_sidebar(authenticator):
             st.session_state.area = st.selectbox('Área', options=['Todos'] + df_bombas['area'].unique().tolist())
 
             st.session_state.tipo_situacao = st.selectbox('Situação',
-                                                          options=['Todos'] + df_bombas['Situaçao'].unique().tolist())
+                                                          options=['Todos'] + df_bombas['situaçao'].unique().tolist())
 
             st.session_state.tipo_equipamento = st.selectbox('Tipo de Equipamento',
-                                                             options=['Todos'] + df_bombas['Tipo'].unique().tolist())
+                                                             options=['Todos'] + df_bombas['tipo'].unique().tolist())
 
             st.session_state.ativar_raio = st.checkbox(label='Raio de abrangência (Bomba)', key="manter_raio",
                                                        label_visibility="visible",
