@@ -15,6 +15,9 @@ def carregar_dados():
 
     df = pd.read_csv(url_dataframe, decimal=',')
 
+    #  limitando a visualização na versão preview
+    df = df.head(n=19)
+
     shp_path = '../hidro-monitoring/data/shp/delimitacao_coruripe.shp'
     gdf = gpd.read_file(shp_path)
 

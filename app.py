@@ -3,17 +3,16 @@ import folium
 from shapely.geometry import Point
 import geopandas as gpd
 from streamlit_folium import st_folium
+from scripts.data_loader import carregar_dados
+from sidebar import run_sidebar
+
+# Carregando dados
+df_filtrado, gdf_limites = carregar_dados()
 
 # Título principal
 st.header("Panorama Geral")
 
-# Pegando dados da sessão
-df_filtrado, gdf_limites = st.session_state.df_bombas, st.session_state.gdf_limites
-
-area = st.session_state.area
-tipo_equipamento = st.session_state.tipo_equipamento
-tipo_situacao = st.session_state.tipo_situacao
-ativar_raio = st.session_state.ativar_raio
+area, tipo_equipamento, tipo_situacao, ativar_raio = run_sidebar(df_filtrado)
 
 # Aplicar filtros
 if area != 'Todos':
