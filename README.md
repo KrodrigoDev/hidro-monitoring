@@ -28,3 +28,12 @@ Este projeto tem como objetivo fornecer um **painel interativo** para o monitora
 ## Licença
 
 📜 Este projeto está licenciado sob a [MIT License](LICENSE). Consulte o arquivo `LICENSE` para mais detalhes.
+
+## Entre em Contato
+
+📧 Caso tenha dúvidas, sugestões ou queira contribuir com o projeto, entre em contato:  
+
+ <a href = "mailto:kauarodrigoo25@gmail.com"><img src="https://img.shields.io/badge/-Gmail-%23333?style=for-the-badge&logo=gmail&logoColor=white" target="_blank"></a>
+ <a href="https://www.linkedin.com/in/kau%C3%A3-rodrigo-16535725b/" target="_blank"><img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" target="_blank"></a> 
+
+Ou abra uma **issue** com sua sugestão! Ficarei feliz em avaliar e verificar a viabilidade de aderir ao projeto. 🚀
