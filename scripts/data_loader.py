@@ -1,22 +1,18 @@
 import pandas as pd
 import geopandas as gpd
-from dotenv import dotenv_values
+import os
 import streamlit as st
 
 
 @st.cache_data
 def carregar_dados():
     """Carrega os dados do DataFrame e do shapefile de Coruripe."""
-    config = dotenv_values('../hidro-monitoring/data/bombas.env')
-    url_dataframe = config.get('URL_DATAFRAME')
+    URL_DATAFRAME = os.getenv('URL_DATAFRAME')
 
-    if not url_dataframe:
+    if not URL_DATAFRAME:
         raise ValueError("A variável 'URL_DATAFRAME' não foi encontrada no arquivo de configuração.")
 
-    df = pd.read_csv(url_dataframe, decimal=',')
-
-    #  limitando a visualização na versão preview
-    df = df.head(n=19)
+    df = pd.read_csv(URL_DATAFRAME, decimal=',')
 
     shp_path = '../hidro-monitoring/data/shp/delimitacao_coruripe.shp'
     gdf = gpd.read_file(shp_path)
