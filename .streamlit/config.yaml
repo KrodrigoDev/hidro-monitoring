@@ -20,8 +20,19 @@ credentials:
       first_name: Kauã
       last_name: Rodrigo
       logged_in: false
-      password: $2b$12$i./.arsf/39qbmDYcHH24.X5M2E.xjUlHinh.AaPQNJ4wS3jzXP8i
+      password: "123456"
       roles:
       - admin
       - editor
       - viewer
+    caiori:
+      email: caiomarques@gmail.com
+      failed_login_attempts: 0
+      first_name: Caio
+      last_name: Ricardo
+      logged_in: false
+      password: "123456"
+      roles:
+        - admin
+        - editor
+        - viewer
