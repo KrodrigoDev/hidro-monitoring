@@ -1,11 +1,10 @@
-
 import folium
 from shapely.geometry import Point
 import geopandas as gpd
 from folium.features import CustomIcon
 
 
-def criar_mapa(df_filtrado, gdf_limites, tipo_equipamento='Todos', raio_metros=300):
+def criar_mapa(df_filtrado, tipo_equipamento='Todos', raio_metros=300):
     """
     Cria e retorna um mapa Folium com limites, pontos e buffers opcionais.
 
@@ -19,9 +18,12 @@ def criar_mapa(df_filtrado, gdf_limites, tipo_equipamento='Todos', raio_metros=3
     # Criar mapa centralizado (ex: Coruripe)
     m = folium.Map(location=[-10.124419, -36.176283], zoom_start=11)
 
+    shp_path = '../hidro-monitoring/src/model/shp/delimitacao_coruripe.shp'
+    gdf = gpd.read_file(shp_path)
+
     # Adicionar limites
     folium.GeoJson(
-        gdf_limites,
+        gdf,
         style_function=lambda x: {
             'fillColor': 'transparent',
             'color': 'black',
@@ -32,11 +34,11 @@ def criar_mapa(df_filtrado, gdf_limites, tipo_equipamento='Todos', raio_metros=3
 
     # Adicionar pontos
     for _, ponto in df_filtrado.iterrows():
-        lat, lon = ponto["lat"], ponto["lon"]
+        lat, lon = ponto["latitude"], ponto["longitude"]
         nome, tipo = ponto["nome"], ponto["tipo"]
-        ult_manutencao, ult_limpeza, situacao = ponto["ult_manutencao"], ponto["ult_limpeza"], ponto["situaçao"]
-        amperagem, potencia, voltagem = ponto["amperagem"], ponto["potencia"], ponto["voltagem"]
-        vazao, profundidade = ponto["vazão"], ponto["profundidade"]
+        ult_manutencao, ult_limpeza, situacao = ponto["ult_manutencao"], ponto["ult_limpeza"], ponto["situacao"]
+        voltagem = ponto["voltagem"]
+        vazao, profundidade = ponto["vazao"], ponto["profundidade"]
 
         # Adicionar buffer se for Bomba
         if tipo == 'Bomba' and tipo_equipamento in ['Bomba', 'Todos']:
@@ -59,8 +61,6 @@ def criar_mapa(df_filtrado, gdf_limites, tipo_equipamento='Todos', raio_metros=3
                 <p><b>Situação: </b>{situacao}</p>
                 <hr style="border: 0.5px solid #ccc;">
                 <p><b>Voltagem: </b>{voltagem}</p>
-                <p><b>Amperagem: </b>{amperagem}</p>
-                <p><b>Potência: </b>{potencia}</p>
                 <hr style="border: 0.5px solid #ccc;">
                 <p><b>Coordenadas: </b>{lat}, {lon}</p>
                 <p><b>Vazão: </b>{vazao}</p>

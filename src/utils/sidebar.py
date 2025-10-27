@@ -51,8 +51,7 @@ def exibir_menu_navegacao():
                 del st.session_state[key]
 
         st.session_state["authentication_status"] = None
-        st.session_state["username"] = None
-        st.session_state["name"] = None
+        st.session_state["usuario_logado"] = None
 
         st.switch_page("pages/login.py")
 
@@ -143,7 +142,7 @@ def exibir_info_usuario_sidebar():
         }}
         </style>
         <div class="caixa-info-usuario">
-            {st.session_state.get('name')}
+            {st.session_state.get('usuario_logado').nome}
         </div>
         """, unsafe_allow_html=True)
         st.sidebar.markdown("<br>", unsafe_allow_html=True)
