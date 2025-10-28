@@ -124,3 +124,101 @@ def listar_equipamentos_com_local(db: Session, id_empresa: int = None) -> pd.Dat
     ])
 
     return df
+
+
+def registrar_log(db: Session, id_usuario: int, acao: str, id_equipamento: int = None):
+    """
+    Registra uma ação realizada pelo usuário no sistema.
+
+    Parâmetros:
+        db (Session): Sessão ativa do banco de dados
+        id_usuario (int): ID do usuário que realizou a ação
+        acao (str): Descrição da ação ('criar', 'editar', 'excluir', 'modificar', etc.)
+        id_equipamento (int, opcional): ID do equipamento relacionado à ação
+
+    Retorna:
+        Log (objeto): Instância do log criado
+    """
+    log = models.Log(
+        acao=acao,
+        id_usuario=id_usuario,
+        id_equipamento=id_equipamento
+    )
+    db.add(log)
+    db.commit()
+    db.refresh(log)
+    return log
+
+
+# ==========================================================
+# 🔹 LOGS DE AÇÕES
+# ==========================================================
+
+def registrar_log(db: Session, id_usuario: int, acao: str, id_equipamento: int = None):
+    """
+    Registra uma ação realizada pelo usuário no sistema.
+
+    Parâmetros:
+        db (Session): Sessão ativa do banco de dados
+        id_usuario (int): ID do usuário que realizou a ação
+        acao (str): Descrição da ação ('criar', 'editar', 'excluir', 'modificar', etc.)
+        id_equipamento (int, opcional): ID do equipamento relacionado à ação
+
+    Retorna:
+        Log (objeto): Instância do log criado
+    """
+    log = models.Log(
+        acao=acao,
+        id_usuario=id_usuario,
+        id_equipamento=id_equipamento
+    )
+    db.add(log)
+    db.commit()
+    db.refresh(log)
+    return log
+
+
+def listar_logs_usuario(db: Session) -> pd.DataFrame:
+    """
+    Retorna um DataFrame com todas as ações (logs) realizadas por todos os usuários.
+
+    Inclui:
+      - ID do log
+      - ID e nome do usuário
+      - Ação e data/hora
+      - Informações do equipamento (id, nome, tipo)
+      - Local do equipamento (município e bairro)
+    """
+    query = (
+        db.query(
+            models.Log.id.label("id_log"),
+            models.Usuario.id.label("id_usuario"),
+            models.Usuario.nome.label("nome_usuario"),
+            models.Log.acao,
+            models.Log.created_at.label("data"),
+            models.Equipamento.id.label("id_equipamento"),
+            models.Equipamento.nome.label("nome_equipamento"),
+            models.Equipamento.tipo.label("tipo"),
+            models.LocalEquipamento.municipio.label("municipio"),
+            models.LocalEquipamento.bairro.label("bairro"),
+        )
+        .join(models.Usuario, models.Log.id_usuario == models.Usuario.id)
+        .join(models.Equipamento, models.Log.id_equipamento == models.Equipamento.id, isouter=True)
+        .join(models.LocalEquipamento, models.Equipamento.id_local_equipamento == models.LocalEquipamento.id, isouter=True)
+        .order_by(models.Log.created_at.desc())
+    )
+
+    resultados = query.all()
+
+    df = pd.DataFrame(
+        resultados,
+        columns=[
+            "id_log", "id_usuario", "nome_usuario",
+            "acao", "data",
+            "id_equipamento", "nome_equipamento", "tipo",
+            "municipio", "bairro"
+        ],
+    )
+
+    return df
+

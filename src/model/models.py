@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey
+from sqlalchemy import Column, Integer, String, Date, Float, ForeignKey, DateTime, func
 from sqlalchemy.orm import relationship
-from .database import Base
+from src.model.database import Base
 
 
 class Empresa(Base):
@@ -25,6 +25,19 @@ class Usuario(Base):
     id_empresa = Column(Integer, ForeignKey("empresa.id"))
 
     empresa = relationship("Empresa", back_populates="usuarios")
+    logs = relationship("Log", back_populates="usuario")
+
+
+class LocalEquipamento(Base):
+    __tablename__ = "local_equipamento"
+
+    id = Column(Integer, primary_key=True, index=True)
+    municipio = Column(String)
+    bairro = Column(String)
+    latitude = Column(Float)
+    longitude = Column(Float)
+
+    equipamentos = relationship("Equipamento", back_populates="local_equipamento")
 
 
 class Equipamento(Base):
@@ -44,14 +57,18 @@ class Equipamento(Base):
 
     empresa = relationship("Empresa", back_populates="equipamentos")
     local_equipamento = relationship("LocalEquipamento", back_populates="equipamentos")
+    logs = relationship("Log", back_populates="equipamento")  # ✅ ligação com Log
 
 
-class LocalEquipamento(Base):
-    __tablename__ = "local_equipamento"
+class Log(Base):
+    __tablename__ = "log"
+
     id = Column(Integer, primary_key=True, index=True)
-    municipio = Column(String)
-    bairro = Column(String)
-    latitude = Column(Float)
-    longitude = Column(Float)
+    acao = Column(String, nullable=False)  # criar, alterar, editar, excluir
+    id_usuario = Column(Integer, ForeignKey("usuario.id"))
+    id_equipamento = Column(Integer, ForeignKey("equipamento.id"))
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
 
-    equipamentos = relationship("Equipamento", back_populates="local_equipamento")
+    usuario = relationship("Usuario", back_populates="logs")
+    equipamento = relationship("Equipamento", back_populates="logs")

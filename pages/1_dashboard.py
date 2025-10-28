@@ -77,7 +77,7 @@ with filt4:
 
 # Aplicar filtros
 if area != 'Todos':
-    df_bomba = df_bomba[df_bomba['area'] == area]
+    df_bomba = df_bomba[df_bomba['nome'] == area]
 if tipo_equipamento != 'Todos':
     df_bomba = df_bomba[df_bomba['tipo'] == tipo_equipamento]
 if tipo_situacao != 'Todos':

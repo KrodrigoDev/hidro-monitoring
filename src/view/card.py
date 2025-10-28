@@ -1,5 +1,5 @@
 import streamlit as st
-from typing import List, Optional, Union
+from typing import Optional, Union
 
 
 def create_number_card(number: Union[int, float, str], label: Optional[str] = None) -> None:

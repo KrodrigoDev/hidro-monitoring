@@ -9,7 +9,6 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
-
 # Identificadores da revisão
 revision: str = 'e6938506f46c'
 down_revision: Union[str, Sequence[str], None] = None
@@ -69,10 +68,21 @@ def upgrade() -> None:
         sa.Column('id_empresa', sa.Integer(), sa.ForeignKey('empresa.id', ondelete='SET NULL'))
     )
 
+    op.create_table('log',
+                    sa.Column('id', sa.Integer(), primary_key=True),
+                    sa.Column('acao', sa.String(), nullable=True),  # criar, alterar, editar e excluir
+                    sa.Column('id_usuario', sa.Integer(), sa.ForeignKey('usuario.id')),
+                    sa.Column('id_equipamento', sa.Integer(), sa.ForeignKey('equipamento.id')),
+                    sa.Column('created_at', sa.DateTime(), server_default=sa.func.now()),
+                    sa.Column('updated_at', sa.DateTime(), onupdate=sa.func.now())
+                    )
+
 
 def downgrade() -> None:
     """Reverte a estrutura criada no upgrade."""
+    op.drop_table('log')
     op.drop_table('equipamento')
     op.drop_table('local_equipamento')
     op.drop_table('usuario')
     op.drop_table('empresa')
+

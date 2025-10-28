@@ -36,21 +36,39 @@ with tab1:
     st.subheader("Cadastro do Local do Equipamento")
     municipio = st.selectbox("Município", key="municipio", options=['Coruripe'])
     bairro = st.selectbox("Bairro", key="bairro", options=['Conjunto Doutor Fialho', 'Centro', 'Cruzeiro'])
-    latitude = st.number_input("Latitude", key="latitude", format="%.6f")
-    longitude = st.number_input("Longitude", key="longitude", format="%.6f")
+    lat_long = st.text_input("Coordenadas (Latitude e Longitude)", key="lat_long")
+
+    with st.expander("Como conseguir as coordenadas"):
+        st.markdown('''
+        Para obter as **coordenadas de latitude e longitude** no formato correto (ex: `-10.123456, -36.543210`), siga os passos abaixo:
+
+        1. Acesse o [Google Maps](https://www.google.com/maps).
+        2. Localize o ponto exato onde o equipamento está instalado.
+        3. Clique **com o botão direito do mouse** sobre o local desejado.
+        4. No menu que aparecer, clique sobre os **números de latitude e longitude** exibidos no topo.
+        5. As coordenadas serão **copiadas automaticamente** para a área de transferência.
+        6. Cole-as no campo **"Coordenadas (Latitude e Longitude)"** acima.
+
+        ''', unsafe_allow_html=True)
 
     if st.button("Salvar Local"):
-        local = crud.criar_local_equipamento(
-            db=db,
-            municipio=municipio,
-            bairro=bairro,
-            latitude=latitude,
-            longitude=longitude
-        )
+        coordenadas = lat_long.split(',')
 
-        st.session_state.id_local_equipamento = local.id
-        st.success(f"Local '{local.municipio} - {local.bairro}' cadastrado com sucesso!")
-        st.info("Agora vá para a aba 'Cadastrar Equipamento' para registrar o equipamento neste local.")
+        if len(coordenadas) == 2:
+            local = crud.criar_local_equipamento(
+                db=db,
+                municipio=municipio,
+                bairro=bairro,
+                latitude=coordenadas[0],
+                longitude=coordenadas[1]
+            )
+
+            st.session_state.id_local_equipamento = local.id
+            st.success(f"Local '{coordenadas[0]} , {coordenadas[1]}' cadastrado com sucesso!")
+            st.info("Agora vá para a aba 'Cadastrar Equipamento' para registrar o equipamento neste local.")
+
+        else:
+            st.error('Informe as coordenadas de forma correta e separadas por vírgula.')
 
 # ==================================================
 # Aba 2: Cadastro do Equipamento
@@ -83,6 +101,7 @@ with tab2:
 
         if st.button("Salvar Equipamento"):
             id_empresa = usuario.id_empresa
+
             equipamento = crud.criar_equipamento(
                 db=db,
                 nome=nome,
@@ -96,6 +115,8 @@ with tab2:
                 id_empresa=id_empresa,
                 id_local_equipamento=st.session_state.id_local_equipamento
             )
+
+            crud.registrar_log(db, id_usuario=usuario.id, acao="criar", id_equipamento=equipamento.id)
 
             st.balloons()
             sleep(2)
