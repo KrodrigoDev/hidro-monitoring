@@ -24,7 +24,7 @@ with st.container(border=True):
     username = st.text_input("Usuário")
     password = st.text_input("Senha", type="password")
 
-    if st.button("LOGIN", help="Clique para fazer login", use_container_width=True, type='primary'):
+    if st.button("LOGIN",  use_container_width=True, type='primary'):
         db = SessionLocal()
         usuario = validar_login(db, nome=username, senha=password)
 
