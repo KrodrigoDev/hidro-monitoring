@@ -73,16 +73,6 @@
 
 ---
 
-## ⚙️ Configuração do `.env`
-
-Crie um arquivo `.env` na raiz do projeto:
-
-```
-URL_DATAFRAME=https://exemplo.com/dados/bombas.csv
-```
-
----
-
 ## ⚡ Execução do Projeto
 
 #### 1️⃣ Criar e ativar ambiente virtual
