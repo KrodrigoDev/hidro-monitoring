@@ -72,14 +72,13 @@ def configurar_sidebar_marca():
     """
     Exibe o logo da empresa e um separador visual na barra lateral.
     """
-    st.sidebar.image("image/logo-daesc.png")
+    st.sidebar.image("image/17.png")
     st.sidebar.caption('---')
 
 
 def titulos_pagina(
         text,
         font_size="3.1em",
-        # text_color="#3064AD",
         text_color="#3064AD",
         icon=None
 ):
