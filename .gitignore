@@ -1,2 +1,17 @@
-*.env
-data/bombas.env
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ambiente virtual
+/venv
+/.venv
+
+# Banco de dados e arquivos temporários
+*.h2.db
+*.db
+*.sqlite3
+
+# Arquivos de configuração sensíveis
+.env
